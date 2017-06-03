@@ -2,8 +2,6 @@
 
 function permAlone(str) {
   var myArr = [];
-  var cnt = 0;
-  var strLen = str.length;
 
   function get_suffix(str, prefix) {
     var nextSuffix = "";
@@ -15,23 +13,27 @@ function permAlone(str) {
     return nextSuffix;
   }
 
-  var permNext = function f_permNext(prefix, surffix) {
+  var permNext = function f_permNext(prefix, surffix, initStr) {
+  	//call example:  permNext("","abc","abc");
+  	
     var newPrefix = "",
       newSurffix = "";
+    var strLen = initStr.length;
     var i = 0;
     console.log("start func: " + prefix, i, surffix);
 
     if (prefix.length === strLen) {
       myArr.push(prefix);
-      console.log("last str: " + prefix);
+      console.log("combined: " + prefix);
       return;
     }
     for (i = 0; i < surffix.length; i++) {
       newPrefix = prefix + surffix[i];
-      newSurffix = get_suffix(strIdx, newPrefix);
+      newSurffix = get_suffix(initStr, newPrefix);
       console.log(newPrefix, i, newSurffix);
-      permNext(newPrefix, newSurffix);
+      permNext(newPrefix, newSurffix, initStr);
     }
+    return myArr.length;
   };
 
   function idxToStr(idxStr, srcStr) {
@@ -43,12 +45,13 @@ function permAlone(str) {
   }
 
   strIdx = Object.keys(str).join("");
-  permNext("", strIdx);
+  permNext("", strIdx, strIdx);
   console.log(myArr);
   //map idx to char, conver idx list back to string,
   myArr = myArr.filter(function (val) {
   	var charStr = idxToStr(val, str);
-  	console.log(charStr, str);
+  	console.log("src: "+str+", encode: "+val+", decode: "+ charStr + ", match: "+charStr.match(/([a-z])\1+/g));
+  	//find duplicate chars or strings, RegExp: "\1+",
   	return (charStr.match(/([a-z])\1+/g) === null);
   });
   console.log(myArr);
