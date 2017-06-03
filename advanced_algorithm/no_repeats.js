@@ -15,7 +15,7 @@ function permAlone(str) {
 
   var permNext = function f_permNext(prefix, surffix, initStr) {
   	//call example:  permNext("","abc","abc");
-  	
+
     var newPrefix = "",
       newSurffix = "";
     var strLen = initStr.length;
@@ -44,7 +44,7 @@ function permAlone(str) {
   	return lStr;
   }
 
-  strIdx = Object.keys(str).join("");
+  var strIdx = Object.keys(str).join("");
   permNext("", strIdx, strIdx);
   console.log(myArr);
   //map idx to char, conver idx list back to string,
