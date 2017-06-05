@@ -1,15 +1,6 @@
 // Permutations
 
-function get_suffix_compare_char(str, prefix) {
-	// get_suffix(initStr, newPrefix);
-  var nextSuffix = "";
-  for (var i = 0; i < str.length; i++) {
-    if (prefix.indexOf(str[i]) === -1) {
-      nextSuffix += str[i];
-    }
-  }
-  return nextSuffix;
-}
+// Option 1, fix prefix.
 
 function get_suffix(surffix, charIdx) {
   var arr = surffix.split("");
@@ -18,32 +9,35 @@ function get_suffix(surffix, charIdx) {
   return newSurffix;
 }
 
-var myArr = [];
+function permSuffix (str) {
+	var myArr = [];
+	var permNext = function f_permNext(prefix, surffix, initStr) {
+	  //call example:  permNext("","abc","abc");
+	
+	  var newPrefix = "",
+	    newSurffix = "";
+	  var strLen = initStr.length;
+	  var i = 0;
+	  console.log("start func: " + prefix, i, surffix);
+	
+	  if (prefix.length === strLen) {
+	    myArr.push(prefix);
+	    console.log("** Combined: " + prefix);
+	    return;
+	  }
+	  for (i = 0; i < surffix.length; i++) {
+	    newPrefix = prefix + surffix[i];
+	    newSurffix = get_suffix(surffix, i);
+	    console.log(newPrefix, i, newSurffix);
+	    permNext(newPrefix, newSurffix, initStr);
+	  }
+	};
 
-var permNext = function f_permNext(prefix, surffix, initStr) {
-  //call example:  permNext("","abc","abc");
+	permNext("", str, str);
+	return myArr.length;
+}
 
-  var newPrefix = "",
-    newSurffix = "";
-  var strLen = initStr.length;
-  var i = 0;
-  console.log("start func: " + prefix, i, surffix);
-
-  if (prefix.length === strLen) {
-    myArr.push(prefix);
-    console.log("** Combined: " + prefix);
-    return;
-  }
-  for (i = 0; i < surffix.length; i++) {
-    newPrefix = prefix + surffix[i];
-    newSurffix = get_suffix(surffix, i);
-    console.log(newPrefix, i, newSurffix);
-    permNext(newPrefix, newSurffix, initStr);
-  }
-  return myArr.length;
-};
-
-permNext("", "abc", "abc");
+permSuffix("123");
 
 
 // options 2,  Introduce the a letter to the space.
@@ -61,27 +55,33 @@ function introChar(targetStr, chr) {
 
 introChar("abc", "1");
 
-var myStr = "abc";
-var pos = 1;
-var nextChar = myStr[pos];
-
-var permIntro = function f_intro (arr, chr) {
-	console.log(pos, arr, myStr);
-	var len = myStr.length;
-	if (pos >= len || pos > 20) {
-		return;
-	}
-	chr = myStr[pos];
-	pos++;
-	var plusCharArr=[];
-	arr.forEach( function(str) {
-		plusCharArr = introChar(str, chr);
-		console.log(plusCharArr);
-		f_intro (plusCharArr, chr)
-	});
+function permInsert (str) {
+	var myArr = [];
+	var permIntro = function f_intro (arr, pos, permStr) {
+		console.log(pos, arr, permStr);
+		var len = permStr.length;
+		if (pos >= len) {
+			myArr = myArr.concat(arr);
+			console.log(arr);
+			return;
+		}
+		if (arr.length === 0) {
+			arr = introChar("", permStr[0]);
+			pos++;
+		}
+		chr = permStr[pos];
+		pos++;
+		arr.forEach( function(val) {
+			var plusCharArr = introChar(val, chr);
+			console.log(plusCharArr);
+			f_intro(plusCharArr, pos, permStr);
+		});
+	};
+	permIntro([], 0, str);
+	return myArr.length;
 }
 
-permIntro([myStr[0]], nextChar);
+permInsert("abcde");
 
 // Reference,  arr is reference type, the paramenter is a link,
 // update in a function, update outside arr elements value too.
