@@ -1,6 +1,6 @@
 // Permutations
 
-// Option 1, fix prefix.
+// Option 1, fix prefix, add a letter to the end of current space.
 
 function get_suffix(surffix, charIdx) {
   var arr = surffix.split("");
@@ -40,7 +40,7 @@ function permSuffix (str) {
 permSuffix("123");
 
 
-// options 2,  Introduce the a letter to the space.
+// options 2,  Introduce and insert a letter to the space of prefix.
 
 function introChar(targetStr, chr) {
 	var arr = [];
