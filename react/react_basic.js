@@ -8,7 +8,7 @@
 */
 
 
-/* React: introduction */
+/* React: introduction ,  2017-Jun-25 */
 
 function ListItem (props) {
 	return (
